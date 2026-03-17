@@ -1,0 +1,14 @@
+[project]
+name = "curdate"
+version = "0.1.0"
+description = "终端日期时间显示工具"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "zhdate>=0.1.0",
+    "holidays>=0.20",
+    "termcolor>=2.0.0",
+]
+
+[project.scripts]
+curdate = "curdate.main:main"
