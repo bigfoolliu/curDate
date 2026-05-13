@@ -13,6 +13,17 @@ from curdate.birthday import (
     list_birthdays
 )
 
+MONTH_DAYS = {
+    1: 31, 2: 29, 3: 31, 4: 30, 5: 31, 6: 30,
+    7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31
+}
+
+
+def validate_date(month: int, day: int) -> bool:
+    if month < 1 or month > 12:
+        return False
+    return 1 <= day <= MONTH_DAYS.get(month, 30)
+
 
 def get_datetime_info():
     now = datetime.now()
@@ -126,12 +137,13 @@ def interactive_add():
 
     try:
         month = int(input("输入月份 (1-12): ").strip())
-        day = int(input("输入日期 (1-30): ").strip())
+        max_day = MONTH_DAYS.get(month, 30)
+        day = int(input(f"输入日期 (1-{max_day}): ").strip())
     except ValueError:
         print(colored("✗ 请输入有效的数字", "red"))
         return
 
-    if month < 1 or month > 12 or day < 1 or day > 30:
+    if not validate_date(month, day):
         print(colored("✗ 日期无效", "red"))
         return
 
@@ -177,12 +189,13 @@ def interactive_edit(name: str):
 
     try:
         month = int(input("输入月份 (1-12): ").strip())
-        day = int(input("输入日期 (1-30): ").strip())
+        max_day = MONTH_DAYS.get(month, 30)
+        day = int(input(f"输入日期 (1-{max_day}): ").strip())
     except ValueError:
         print(colored("✗ 请输入有效的数字", "red"))
         return
 
-    if month < 1 or month > 12 or day < 1 or day > 30:
+    if not validate_date(month, day):
         print(colored("✗ 日期无效", "red"))
         return
 

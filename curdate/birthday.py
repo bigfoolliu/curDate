@@ -232,9 +232,12 @@ def get_upcoming_birthdays(limit: int = 3, days_limit: int = 30) -> List[Dict]:
 
     upcoming.sort(key=lambda x: x["days_until"])
 
-    upcoming = [u for u in upcoming if u["days_until"] <= days_limit]
+    within_limit = [u for u in upcoming if u["days_until"] <= days_limit]
 
-    return upcoming[:limit]
+    if not within_limit and upcoming:
+        return [upcoming[0]]
+
+    return within_limit[:limit]
 
 
 def list_birthdays() -> List[Dict]:
