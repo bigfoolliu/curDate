@@ -189,12 +189,13 @@ def _calculate_days_until(birth_type: str, month: int, day: int) -> Dict:
     return {"days_until": days_until, "passed": passed, "solar_date": solar_date}
 
 
-def get_upcoming_birthdays(limit: int = 3) -> List[Dict]:
+def get_upcoming_birthdays(limit: int = 3, days_limit: int = 30) -> List[Dict]:
     """
     获取即将到来的生日列表
 
     Args:
         limit: 返回数量限制
+        days_limit: 只返回该天数范围内的生日
 
     Returns:
         即将到来的生日列表
@@ -209,7 +210,6 @@ def get_upcoming_birthdays(limit: int = 3) -> List[Dict]:
         day = b["day"]
         birth_type = b["type"]
 
-        # 计算距离天数
         result = _calculate_days_until(birth_type, month, day)
         days_until = result.get("days_until", 9999)
         passed = result.get("passed", True)
@@ -230,8 +230,9 @@ def get_upcoming_birthdays(limit: int = 3) -> List[Dict]:
             "solar_date": solar_date_str
         })
 
-    # 按距离天数排序
     upcoming.sort(key=lambda x: x["days_until"])
+
+    upcoming = [u for u in upcoming if u["days_until"] <= days_limit]
 
     return upcoming[:limit]
 
